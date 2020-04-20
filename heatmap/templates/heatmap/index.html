@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Corona Cases</title>
+    <link href='https://api.mapbox.com/mapbox-gl-js/v1.8.1/mapbox-gl.css' rel='stylesheet' />
+    <script src='https://api.mapbox.com/mapbox-gl-js/v1.8.1/mapbox-gl.js'></script>
+</head>
+<body>
+    Corona Cases Heatmap
+    <div id='map' style='width: 400px; height: 300px;'></div>
+    <script>
+        mapboxgl.accessToken = 'pk.eyJ1Ijoic2Fua2V0cDYwIiwiYSI6ImNrOTV6NnducDAzNmYzZGxpenVpNDAxNjcifQ.bgtVwS9UHgLq97Nc2kXg5Q';
+            var map = new mapboxgl.Map({
+                container: 'map',
+                style: 'mapbox://styles/mapbox/dark-v10',
+                center: [72.8777, 19.0760],
+                zoom: 9
+            });
+            map.on('load', function() {
+                // Add a geojson point source.
+                // Heatmap layers also work with a vector tile source.
+                map.addSource('corona-cases', {
+                'type': 'geojson',
+                'data':
+                    'https://raw.githubusercontent.com/InternityFoundation/screw-corona_2101/master/features_native.geojson'
+            });
+                map.addLayer({
+                'id': 'heatmap',
+                'type': 'fill',
+                'source': 'corona-cases',
+                'paint': {
+                    'fill-color': [
+          "case", 
+          ['==', ['get', "name"], "A"], '{{ color_A }}', 
+          ['==', ['get', "name"], "B"], '{{ color_B }}', 
+          ['==', ['get', "name"], "C"], '{{ color_C }}', 
+          ['==', ['get', "name"], "D"], '{{ color_D }}', 
+          ['==', ['get', "name"], "E"], '{{ color_E }}', 
+          '#000000'
+        ],
+        'fill-outline-color': '#3bb2d0',
+        'fill-opacity': 0.5
+      }
+            });
+
+        });
+</script>
+    
+</body>
+</html>
